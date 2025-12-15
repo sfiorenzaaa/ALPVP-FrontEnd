@@ -1,6 +1,6 @@
-package com.shannon.shannonweek14.data.service
+package com.shannon.shannonweek14.service
 
-import com.shannon.shannonweek14.data.dto.*
+import com.shannon.shannonweek14.dto.*
 import retrofit2.Response
 import retrofit2.http.*
 

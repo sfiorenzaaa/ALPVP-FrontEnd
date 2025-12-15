@@ -1,4 +1,4 @@
-package com.shannon.shannonweek14.data.service
+package com.shannon.shannonweek14.service
 
 import com.shannon.shannonweek14.interceptor.AuthInterceptor
 import okhttp3.OkHttpClient

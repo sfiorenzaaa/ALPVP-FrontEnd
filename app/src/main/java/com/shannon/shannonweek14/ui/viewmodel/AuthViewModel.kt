@@ -3,9 +3,9 @@ package com.shannon.shannonweek14.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shannon.shannonweek14.data.dto.LoginRequest
-import com.shannon.shannonweek14.data.dto.RegisterRequest
-import com.shannon.shannonweek14.data.repository.AuthRepository
+import com.shannon.shannonweek14.dto.LoginRequest
+import com.shannon.shannonweek14.dto.RegisterRequest
+import com.shannon.shannonweek14.repository.AuthRepository
 import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
@@ -17,7 +17,7 @@ class AuthViewModel : ViewModel() {
     val loginResponse = MutableLiveData<String>()      // token
     val registerSuccess = MutableLiveData<Boolean>()
 
-    fun login(email: String, password: String, function: () -> Unit) {
+    fun login(email: String, password: String) {
         loading.value = true
 
         viewModelScope.launch {

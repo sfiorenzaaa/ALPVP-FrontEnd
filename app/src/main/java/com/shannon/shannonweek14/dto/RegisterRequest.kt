@@ -1,4 +1,4 @@
-package com.shannon.shannonweek14.data.dto
+package com.shannon.shannonweek14.dto
 
 data class RegisterRequest(
     val name: String,

@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import com.shannon.shannonweek14.ui.model.Journal
 
 class JournalActivity : ComponentActivity() {
 
@@ -157,7 +158,7 @@ fun JournalMainScreen(
 
 @Composable
 fun JournalHistoryScreen(
-    journals: List<com.shannon.shannonweek14.data.model.Journal>,
+    journals: List<Journal>,
     onBack: () -> Unit
 ) {
     Column(

@@ -75,7 +75,7 @@ class HomeActivity : ComponentActivity() {
                 startActivity(Intent(this@HomeActivity, GuessEmojiActivity::class.java))
             }
 
-            Spacer(modifier = Modifier.height(80.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             CardMenu(
                 title = "📅 Events",

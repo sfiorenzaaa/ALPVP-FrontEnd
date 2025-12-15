@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.shannon.shannonweek14.data.datastore.TokenManager
-import com.shannon.shannonweek14.data.model.Event
+import com.shannon.shannonweek14.ui.model.Event
 import com.shannon.shannonweek14.ui.theme.Theme
 import com.shannon.shannonweek14.ui.viewmodel.EventViewModel
 import kotlinx.coroutines.runBlocking
@@ -201,7 +201,7 @@ fun EventItem(event: Event) {
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "📅 ${event.eventDate.take(10)}", // Ambil tanggalnya saja (YYYY-MM-DD)
+                    text = "📅 ${event.eventDate.take(10)}",
                     style = MaterialTheme.typography.labelMedium,
                     color = Color.DarkGray
                 )

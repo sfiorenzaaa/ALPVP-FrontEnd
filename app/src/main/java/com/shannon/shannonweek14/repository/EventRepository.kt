@@ -1,10 +1,10 @@
-package com.shannon.shannonweek14.data.repository
+package com.shannon.shannonweek14.repository
 
-import com.shannon.shannonweek14.data.dto.CreateEventRequest
-import com.shannon.shannonweek14.data.dto.UpdateEventStatusRequest
-import com.shannon.shannonweek14.data.model.Event
-import com.shannon.shannonweek14.data.service.ApiClient
-import com.shannon.shannonweek14.data.service.EventService
+import com.shannon.shannonweek14.dto.CreateEventRequest
+import com.shannon.shannonweek14.dto.UpdateEventStatusRequest
+import com.shannon.shannonweek14.ui.model.Event
+import com.shannon.shannonweek14.service.ApiClient
+import com.shannon.shannonweek14.service.EventService
 
 class EventRepository(private val token: String? = null) {
 

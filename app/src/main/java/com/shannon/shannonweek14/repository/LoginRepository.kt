@@ -2,9 +2,9 @@ package com.shannon.shannonweek14.repository
 
 
 import com.shannon.shannonweek14.data.datastore.TokenManager
-import com.shannon.shannonweek14.data.dto.ApiResponse
-import com.shannon.shannonweek14.data.dto.LoginRequest
-import com.shannon.shannonweek14.data.dto.LoginResponse
+import com.shannon.shannonweek14.dto.ApiResponse
+import com.shannon.shannonweek14.dto.LoginRequest
+import com.shannon.shannonweek14.dto.LoginResponse
 import com.shannon.shannonweek14.service.AuthService
 
 

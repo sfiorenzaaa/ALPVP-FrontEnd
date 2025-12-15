@@ -1,6 +1,6 @@
-package com.shannon.shannonweek14.data.dto
+package com.shannon.shannonweek14.dto
 
-import com.shannon.shannonweek14.data.model.Event
+import com.shannon.shannonweek14.ui.model.Event
 
 data class CreateEventRequest(
     val title: String,

@@ -1,4 +1,4 @@
-package com.shannon.shannonweek14.data.model
+package com.shannon.shannonweek14.ui.model
 
 data class EmojiQuiz(
     val id: Int,
