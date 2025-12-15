@@ -3,9 +3,15 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 package com.shannon.shannonweek14.data.dto
 
 import com.shannon.shannonweek14.data.model.Event
+=======
+package com.shannon.shannonweek14.dto
+
+import com.shannon.shannonweek14.ui.model.Event
+>>>>>>> Stashed changes
 =======
 package com.shannon.shannonweek14.dto
 
@@ -44,7 +50,11 @@ data class UpdateEventStatusRequest(
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     val status: String // "APPROVE" atau "REJECT"
+=======
+    val status: String
+>>>>>>> Stashed changes
 =======
     val status: String
 >>>>>>> Stashed changes
