@@ -91,6 +91,9 @@ class LoginActivity : ComponentActivity() {
                             scope.launch {
                                 try {
                                     repo.login(email.trim(), password.trim())
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
                             if (cleanEmail.isNotEmpty() && cleanPassword.isNotEmpty()) {

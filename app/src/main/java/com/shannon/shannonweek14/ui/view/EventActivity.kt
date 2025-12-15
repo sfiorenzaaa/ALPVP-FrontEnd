@@ -2,7 +2,10 @@ package com.shannon.shannonweek14.ui.view
 
 import android.os.Bundle
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import android.widget.Toast
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 import androidx.activity.ComponentActivity
@@ -11,9 +14,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+=======
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+>>>>>>> Stashed changes
 =======
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +33,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -67,6 +77,8 @@ class EventActivity : ComponentActivity() {
 
                 EventScreen(viewModel)
 =======
+=======
+>>>>>>> Stashed changes
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.shannon.shannonweek14.data.datastore.TokenManager
@@ -97,12 +109,16 @@ class EventActivity : ComponentActivity() {
                         onBackHome = { finish() }
                     )
                 }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             }
         }
     }
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -273,6 +289,8 @@ fun StatusChip(status: String) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
 =======
+=======
+>>>>>>> Stashed changes
 @Composable
 fun EventMainScreen(
     vm: EventViewModel,
@@ -374,12 +392,16 @@ fun EventMainScreen(
                     showCreateDialog = false
                 }
             }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         )
     }
 }
 
 @Composable
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 fun CreateEventDialog(onDismiss: () -> Unit, onSubmit: (String, String, String) -> Unit) {
     var title by remember { mutableStateOf("") }
@@ -393,6 +415,8 @@ fun CreateEventDialog(onDismiss: () -> Unit, onSubmit: (String, String, String) 
         text = {
             Column {
 =======
+=======
+>>>>>>> Stashed changes
 fun EventCard(event: Event) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -461,6 +485,9 @@ fun CreateEventDialog(
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                 OutlinedTextField(
                     value = title,
@@ -469,7 +496,13 @@ fun CreateEventDialog(
                     modifier = Modifier.fillMaxWidth()
                 )
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 Spacer(modifier = Modifier.height(8.dp))
+=======
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+>>>>>>> Stashed changes
 =======
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -480,6 +513,7 @@ fun CreateEventDialog(
                     onValueChange = { description = it },
                     label = { Text("Description") },
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -489,6 +523,8 @@ fun CreateEventDialog(
                     label = { Text("Date (YYYY-MM-DD)") },
                     placeholder = { Text("2025-01-01") },
 =======
+=======
+>>>>>>> Stashed changes
                     modifier = Modifier.fillMaxWidth(),
                     minLines = 3
                 )
@@ -499,12 +535,16 @@ fun CreateEventDialog(
                     value = date,
                     onValueChange = { date = it },
                     label = { Text("Date (ISO Format)") },
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     modifier = Modifier.fillMaxWidth()
                 )
             }
         },
         confirmButton = {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             Button(onClick = {
                 if (title.isNotEmpty() && description.isNotEmpty() && date.isNotEmpty()) {
@@ -513,6 +553,8 @@ fun CreateEventDialog(
             }) {
                 Text("Save")
 =======
+=======
+>>>>>>> Stashed changes
             Button(
                 onClick = {
                     if (title.isNotBlank() && description.isNotBlank()) {
@@ -521,6 +563,9 @@ fun CreateEventDialog(
                 }
             ) {
                 Text("Create")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             }
         },

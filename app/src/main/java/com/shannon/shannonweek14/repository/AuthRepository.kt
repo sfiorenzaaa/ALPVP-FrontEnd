@@ -6,7 +6,12 @@ import com.shannon.shannonweek14.data.dto.LoginResponse
 import com.shannon.shannonweek14.data.dto.RegisterRequest
 import com.shannon.shannonweek14.data.service.ApiClient
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import com.shannon.shannonweek14.data.service.AuthService
+=======
+
+import com.shannon.shannonweek14.service.AuthService
+>>>>>>> Stashed changes
 =======
 
 import com.shannon.shannonweek14.service.AuthService
