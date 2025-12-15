@@ -13,7 +13,11 @@ interface AuthService {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     @POST("users/register")
+=======
+    @POST("users")
+>>>>>>> Stashed changes
 =======
     @POST("users")
 >>>>>>> Stashed changes
