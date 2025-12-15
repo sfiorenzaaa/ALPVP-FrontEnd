@@ -53,9 +53,10 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.compose.ui:ui:1.6.0")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.0")
-    implementation("androidx.compose.material3:material3:1.3.1") // versi stabil
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
+    implementation("androidx.compose.material3:material3:1.3.1")
     implementation("androidx.compose.foundation:foundation:1.6.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.0")
 
     // Retrofit + Gson

@@ -25,7 +25,7 @@
         <!-- HOME -->
         <activity
             android:name=".ui.view.HomeActivity"
-            android:exported="true" />
+            android:exported="false" />
 
         <activity android:name=".MainActivity" />
         <activity android:name=".ui.view.SongsActivity" />

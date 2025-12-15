@@ -76,6 +76,14 @@ class HomeActivity : ComponentActivity() {
             }
 
             Spacer(modifier = Modifier.height(80.dp))
+
+            CardMenu(
+                title = "📅 Events",
+                description = "Browse and create community events."
+            ) {
+                startActivity(Intent(this@HomeActivity, EventActivity::class.java))
+            }
+
         }
     }
 

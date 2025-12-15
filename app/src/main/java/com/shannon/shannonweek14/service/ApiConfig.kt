@@ -1,6 +1,7 @@
 package com.shannon.shannonweek14.data.service
 
 import SongsService
+import com.shannon.shannonweek14.service.AuthService
 
 object ApiConfig {
 
