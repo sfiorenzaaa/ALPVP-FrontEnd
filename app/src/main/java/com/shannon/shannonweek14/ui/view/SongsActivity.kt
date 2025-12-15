@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.shannon.shannonweek14.data.datastore.TokenManager
-import com.shannon.shannonweek14.data.model.Songs
+import com.shannon.shannonweek14.ui.model.Songs
 import com.shannon.shannonweek14.ui.songs.SongsViewModel
 import com.shannon.shannonweek14.ui.theme.Theme
 

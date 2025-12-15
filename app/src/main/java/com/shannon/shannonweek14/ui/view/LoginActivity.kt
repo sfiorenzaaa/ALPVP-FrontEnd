@@ -17,7 +17,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.shannon.shannonweek14.ui.theme.Theme
+import com.shannon.shannonweek14.data.datastore.TokenManager
 import com.shannon.shannonweek14.ui.viewmodel.AuthViewModel
+import kotlinx.coroutines.launch
 
 class LoginActivity : ComponentActivity() {
 
@@ -28,10 +30,15 @@ class LoginActivity : ComponentActivity() {
             Theme {
                 val authViewModel: AuthViewModel = viewModel()
                 val context = LocalContext.current
+
+                val tokenManager = remember { TokenManager(context) }
+                val scope = rememberCoroutineScope()
+
                 val loginToken by authViewModel.loginResponse.observeAsState()
 
                 LaunchedEffect(loginToken) {
                     if (loginToken != null) {
+                        tokenManager.saveToken(loginToken!!)
                         Toast.makeText(context, "Login Berhasil!", Toast.LENGTH_SHORT).show()
 
                         val intent = Intent(context, HomeActivity::class.java)

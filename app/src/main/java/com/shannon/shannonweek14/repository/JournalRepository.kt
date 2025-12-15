@@ -1,9 +1,9 @@
-package com.shannon.shannonweek14.data.repository
+package com.shannon.shannonweek14.repository
 
-import com.shannon.shannonweek14.data.model.Journal
-import com.shannon.shannonweek14.data.service.ApiClient
-import com.shannon.shannonweek14.data.service.CreateJournalRequest
-import com.shannon.shannonweek14.data.service.JournalService
+import com.shannon.shannonweek14.ui.model.Journal
+import com.shannon.shannonweek14.service.ApiClient
+import com.shannon.shannonweek14.service.CreateJournalRequest
+import com.shannon.shannonweek14.service.JournalService
 
 class JournalRepository(private val token: String) {
 

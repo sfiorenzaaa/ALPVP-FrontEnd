@@ -2,7 +2,7 @@ package com.shannon.shannonweek14.ui.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.shannon.shannonweek14.data.model.EmojiQuiz
+import com.shannon.shannonweek14.ui.model.EmojiQuiz
 
 class EmojiQuizViewModel : ViewModel() {
 

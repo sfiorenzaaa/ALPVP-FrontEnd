@@ -1,9 +1,9 @@
-package com.shannon.shannonweek14.data.service
+package com.shannon.shannonweek14.service
 
-import com.shannon.shannonweek14.data.dto.ApiResponse
-import com.shannon.shannonweek14.data.dto.LoginRequest
-import com.shannon.shannonweek14.data.dto.LoginResponse
-import com.shannon.shannonweek14.data.dto.RegisterRequest
+import com.shannon.shannonweek14.dto.ApiResponse
+import com.shannon.shannonweek14.dto.LoginRequest
+import com.shannon.shannonweek14.dto.LoginResponse
+import com.shannon.shannonweek14.dto.RegisterRequest
 import retrofit2.http.Body
 import retrofit2.http.POST
 

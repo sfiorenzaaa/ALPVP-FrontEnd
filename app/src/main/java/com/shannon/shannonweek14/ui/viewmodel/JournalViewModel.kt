@@ -2,9 +2,9 @@ package com.shannon.shannonweek14.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shannon.shannonweek14.data.model.Journal
-import com.shannon.shannonweek14.data.repository.JournalRepository
-import com.shannon.shannonweek14.data.service.CreateJournalRequest
+import com.shannon.shannonweek14.ui.model.Journal
+import com.shannon.shannonweek14.repository.JournalRepository
+import com.shannon.shannonweek14.service.CreateJournalRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
