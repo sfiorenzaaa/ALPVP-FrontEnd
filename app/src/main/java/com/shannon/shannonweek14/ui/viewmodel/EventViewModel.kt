@@ -1,5 +1,6 @@
 package com.shannon.shannonweek14.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shannon.shannonweek14.dto.CreateEventRequest
@@ -24,6 +25,13 @@ class EventViewModel(private val token: String) : ViewModel() {
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
+
+    private val _pendingEvents = MutableStateFlow<List<Event>>(emptyList())
+    val pendingEvents: StateFlow<List<Event>> = _pendingEvents
+
+    private val _isAdmin = MutableStateFlow(false)
+    val isAdmin: StateFlow<Boolean> = _isAdmin
+
 
     fun loadPublicEvents() {
         _loading.value = true
@@ -81,6 +89,7 @@ class EventViewModel(private val token: String) : ViewModel() {
         viewModelScope.launch {
             try {
                 repo.updateEventStatus(eventId, "APPROVE")
+                loadPendingEvents()
                 loadPublicEvents()
             } catch (e: Exception) {
                 _error.value = e.message
@@ -92,9 +101,35 @@ class EventViewModel(private val token: String) : ViewModel() {
         viewModelScope.launch {
             try {
                 repo.updateEventStatus(eventId, "REJECT")
-                loadPublicEvents()
+                loadPendingEvents()
             } catch (e: Exception) {
                 _error.value = e.message
+            }
+        }
+    }
+
+    fun checkIsAdmin() {
+        viewModelScope.launch {
+            try {
+                val userProfile = repo.getMyEvents()
+                _isAdmin.value = true
+            } catch (e: Exception) {
+                _isAdmin.value = false
+            }
+        }
+    }
+
+    fun loadPendingEvents() {
+        _loading.value = true
+        viewModelScope.launch {
+            try {
+                val result = repo.getPendingEvents()
+
+                _pendingEvents.value = result
+            } catch (e: Exception) {
+                Log.e("EventViewModel", "Error loading pending events: ${e.message}")
+            } finally {
+                _loading.value = false
             }
         }
     }
