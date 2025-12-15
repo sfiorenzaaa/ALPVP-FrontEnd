@@ -15,14 +15,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-<<<<<<< Updated upstream
 import androidx.lifecycle.viewmodel.compose.viewModel
-=======
 import com.shannon.shannonweek14.data.datastore.TokenManager
 import com.shannon.shannonweek14.data.service.ApiClient
 import com.shannon.shannonweek14.service.AuthService
 import com.shannon.shannonweek14.repository.LoginRepository
->>>>>>> Stashed changes
 import com.shannon.shannonweek14.ui.theme.Theme
 import com.shannon.shannonweek14.ui.viewmodel.AuthViewModel
 
@@ -84,30 +81,11 @@ class LoginActivity : ComponentActivity() {
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-<<<<<<< Updated upstream
                             val cleanEmail = email.trim()
                             val cleanPassword = password.trim()
-=======
                             scope.launch {
                                 try {
                                     repo.login(email.trim(), password.trim())
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
                             if (cleanEmail.isNotEmpty() && cleanPassword.isNotEmpty()) {
                                 authViewModel.login(cleanEmail, cleanPassword)
 
