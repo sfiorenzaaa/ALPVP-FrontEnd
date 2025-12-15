@@ -5,8 +5,13 @@ import androidx.lifecycle.viewModelScope
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import com.shannon.shannonweek14.data.dto.CreateEventRequest
 import com.shannon.shannonweek14.data.model.Event
+=======
+import com.shannon.shannonweek14.dto.CreateEventRequest
+import com.shannon.shannonweek14.ui.model.Event
+>>>>>>> Stashed changes
 =======
 import com.shannon.shannonweek14.dto.CreateEventRequest
 import com.shannon.shannonweek14.ui.model.Event

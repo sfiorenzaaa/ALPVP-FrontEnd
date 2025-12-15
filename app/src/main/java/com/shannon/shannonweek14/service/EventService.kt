@@ -1,9 +1,15 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 package com.shannon.shannonweek14.data.service
 
 import com.shannon.shannonweek14.data.dto.*
+=======
+package com.shannon.shannonweek14.service
+
+import com.shannon.shannonweek14.dto.*
+>>>>>>> Stashed changes
 =======
 package com.shannon.shannonweek14.service
 
