@@ -1,10 +1,18 @@
 package com.shannon.shannonweek14.data.repository
 
+<<<<<<< Updated upstream
 import com.shannon.shannonweek14.data.dto.CreateEventRequest
 import com.shannon.shannonweek14.data.dto.UpdateEventStatusRequest
 import com.shannon.shannonweek14.data.model.Event
 import com.shannon.shannonweek14.data.service.ApiClient
 import com.shannon.shannonweek14.data.service.EventService
+=======
+import com.shannon.shannonweek14.dto.CreateEventRequest
+import com.shannon.shannonweek14.dto.UpdateEventStatusRequest
+import com.shannon.shannonweek14.ui.model.Event
+import com.shannon.shannonweek14.data.service.ApiClient
+import com.shannon.shannonweek14.service.EventService
+>>>>>>> Stashed changes
 
 class EventRepository(private val token: String? = null) {
 
@@ -28,7 +36,10 @@ class EventRepository(private val token: String? = null) {
         }
     }
 
+<<<<<<< Updated upstream
     // Get my events
+=======
+>>>>>>> Stashed changes
     suspend fun getMyEvents(): List<Event> {
         val response = api.getMyEvents()
         if (response.isSuccessful) {
@@ -38,7 +49,10 @@ class EventRepository(private val token: String? = null) {
         }
     }
 
+<<<<<<< Updated upstream
     // Admin: Update event status
+=======
+>>>>>>> Stashed changes
     suspend fun updateEventStatus(eventId: Int, status: String): Event {
         val response = api.updateEventStatus(eventId, UpdateEventStatusRequest(status))
         if (response.isSuccessful) {

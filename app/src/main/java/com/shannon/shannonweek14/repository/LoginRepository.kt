@@ -5,7 +5,7 @@ import com.shannon.shannonweek14.data.datastore.TokenManager
 import com.shannon.shannonweek14.data.dto.ApiResponse
 import com.shannon.shannonweek14.data.dto.LoginRequest
 import com.shannon.shannonweek14.data.dto.LoginResponse
-import com.shannon.shannonweek14.data.service.AuthService
+import com.shannon.shannonweek14.service.AuthService
 
 
 class LoginRepository(

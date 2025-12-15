@@ -1,20 +1,30 @@
 package com.shannon.shannonweek14.ui.view
 
 import android.os.Bundle
+<<<<<<< Updated upstream
 import android.widget.Toast
+=======
+>>>>>>> Stashed changes
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+<<<<<<< Updated upstream
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+=======
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+>>>>>>> Stashed changes
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+<<<<<<< Updated upstream
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -56,11 +66,44 @@ class EventActivity : ComponentActivity() {
                 )
 
                 EventScreen(viewModel)
+=======
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
+import com.shannon.shannonweek14.data.datastore.TokenManager
+import com.shannon.shannonweek14.ui.model.Event
+import com.shannon.shannonweek14.ui.theme.ColorPalette
+import com.shannon.shannonweek14.ui.theme.Theme
+import com.shannon.shannonweek14.ui.viewmodel.EventViewModel
+import kotlinx.coroutines.launch
+
+class EventActivity : ComponentActivity() {
+
+    private lateinit var vm: EventViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val tokenManager = TokenManager(this)
+
+        lifecycleScope.launch {
+            val token = tokenManager.getToken() ?: ""
+            vm = EventViewModel(token)
+            vm.loadPublicEvents()
+
+            setContent {
+                Theme {
+                    EventMainScreen(
+                        vm = vm,
+                        onBackHome = { finish() }
+                    )
+                }
+>>>>>>> Stashed changes
             }
         }
     }
 }
 
+<<<<<<< Updated upstream
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventScreen(viewModel: EventViewModel) {
@@ -229,11 +272,115 @@ fun StatusChip(status: String) {
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+=======
+@Composable
+fun EventMainScreen(
+    vm: EventViewModel,
+    onBackHome: () -> Unit
+) {
+    var showCreateDialog by remember { mutableStateOf(false) }
+    var showMyEvents by remember { mutableStateOf(false) }
+
+    val publicEvents by vm.publicEvents.collectAsState()
+    val myEvents by vm.myEvents.collectAsState()
+    val loading by vm.loading.collectAsState()
+    val error by vm.error.collectAsState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp)
+    ) {
+        Text(
+            text = if (showMyEvents) "My Events" else "Public Events",
+            style = MaterialTheme.typography.titleLarge
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Button(
+                onClick = {
+                    showMyEvents = false
+                    vm.loadPublicEvents()
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Public")
+            }
+
+            Button(
+                onClick = {
+                    showMyEvents = true
+                    vm.loadMyEvents()
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("My Events")
+            }
+
+            Button(
+                onClick = { showCreateDialog = true },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Create")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (loading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            val eventsList = if (showMyEvents) myEvents else publicEvents
+
+            if (eventsList.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("No events found", color = Color.Gray)
+                }
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(eventsList) { event ->
+                        EventCard(event)
+                    }
+                }
+            }
+        }
+
+        error?.let {
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(it, color = MaterialTheme.colorScheme.error)
+        }
+    }
+
+    if (showCreateDialog) {
+        CreateEventDialog(
+            onDismiss = { showCreateDialog = false },
+            onConfirm = { title, desc, date ->
+                vm.createEvent(title, desc, date) {
+                    showCreateDialog = false
+                }
+            }
+>>>>>>> Stashed changes
         )
     }
 }
 
 @Composable
+<<<<<<< Updated upstream
 fun CreateEventDialog(onDismiss: () -> Unit, onSubmit: (String, String, String) -> Unit) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
@@ -245,17 +392,94 @@ fun CreateEventDialog(onDismiss: () -> Unit, onSubmit: (String, String, String) 
         title = { Text("Create New Event") },
         text = {
             Column {
+=======
+fun EventCard(event: Event) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = ColorPalette.background
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = event.title,
+                style = MaterialTheme.typography.titleMedium,
+                color = ColorPalette.primary
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = event.description,
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Status: ${event.status}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = when (event.status) {
+                        "APPROVE" -> Color.Green
+                        "REJECT" -> Color.Red
+                        else -> Color.Gray
+                    }
+                )
+
+                event.user?.let {
+                    Text(
+                        text = "By: ${it.username}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CreateEventDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (String, String, String) -> Unit
+) {
+    var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var date by remember { mutableStateOf("2025-12-31T10:00:00Z") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Create Event") },
+        text = {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+>>>>>>> Stashed changes
                 OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
                     label = { Text("Title") },
                     modifier = Modifier.fillMaxWidth()
                 )
+<<<<<<< Updated upstream
                 Spacer(modifier = Modifier.height(8.dp))
+=======
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+>>>>>>> Stashed changes
                 OutlinedTextField(
                     value = description,
                     onValueChange = { description = it },
                     label = { Text("Description") },
+<<<<<<< Updated upstream
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -264,17 +488,40 @@ fun CreateEventDialog(onDismiss: () -> Unit, onSubmit: (String, String, String) 
                     onValueChange = { date = it },
                     label = { Text("Date (YYYY-MM-DD)") },
                     placeholder = { Text("2025-01-01") },
+=======
+                    modifier = Modifier.fillMaxWidth(),
+                    minLines = 3
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedTextField(
+                    value = date,
+                    onValueChange = { date = it },
+                    label = { Text("Date (ISO Format)") },
+>>>>>>> Stashed changes
                     modifier = Modifier.fillMaxWidth()
                 )
             }
         },
         confirmButton = {
+<<<<<<< Updated upstream
             Button(onClick = {
                 if (title.isNotEmpty() && description.isNotEmpty() && date.isNotEmpty()) {
                     onSubmit(title, description, "${date}T00:00:00Z") // Format ISO standar backend
                 }
             }) {
                 Text("Save")
+=======
+            Button(
+                onClick = {
+                    if (title.isNotBlank() && description.isNotBlank()) {
+                        onConfirm(title, description, date)
+                    }
+                }
+            ) {
+                Text("Create")
+>>>>>>> Stashed changes
             }
         },
         dismissButton = {

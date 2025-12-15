@@ -1,4 +1,4 @@
-package com.shannon.shannonweek14.data.service
+package com.shannon.shannonweek14.service
 
 import com.shannon.shannonweek14.data.dto.ApiResponse
 import com.shannon.shannonweek14.data.dto.LoginRequest
@@ -9,7 +9,11 @@ import retrofit2.http.POST
 
 interface AuthService {
 
+<<<<<<< Updated upstream
     @POST("users/register")
+=======
+    @POST("users")
+>>>>>>> Stashed changes
     suspend fun register(
         @Body body: RegisterRequest
     ): ApiResponse<Any>

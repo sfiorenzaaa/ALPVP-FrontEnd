@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 package com.shannon.shannonweek14.data.model
+=======
+package com.shannon.shannonweek14.ui.model
+>>>>>>> Stashed changes
 
 data class Event(
     val id: Int,

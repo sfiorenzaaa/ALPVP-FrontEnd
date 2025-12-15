@@ -1,6 +1,12 @@
+<<<<<<< Updated upstream
 package com.shannon.shannonweek14.data.dto
 
 import com.shannon.shannonweek14.data.model.Event
+=======
+package com.shannon.shannonweek14.dto
+
+import com.shannon.shannonweek14.ui.model.Event
+>>>>>>> Stashed changes
 
 data class CreateEventRequest(
     val title: String,
@@ -9,7 +15,11 @@ data class CreateEventRequest(
 )
 
 data class UpdateEventStatusRequest(
+<<<<<<< Updated upstream
     val status: String // "APPROVE" atau "REJECT"
+=======
+    val status: String
+>>>>>>> Stashed changes
 )
 
 data class EventResponse(
