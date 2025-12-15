@@ -27,7 +27,6 @@ import com.shannon.shannonweek14.ui.theme.Theme
 import com.shannon.shannonweek14.ui.viewmodel.EventViewModel
 import kotlinx.coroutines.runBlocking
 
-// 1. FACTORY: Wajib ada karena ViewModel butuh parameter 'token'
 class EventViewModelFactory(private val token: String) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EventViewModel::class.java)) {
@@ -42,7 +41,6 @@ class EventActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Ambil token secara sinkron untuk inisialisasi awal
         val tokenManager = TokenManager(applicationContext)
         val token = runBlocking {
             tokenManager.getToken() ?: ""
@@ -50,7 +48,6 @@ class EventActivity : ComponentActivity() {
 
         setContent {
             Theme {
-                // Inisialisasi ViewModel menggunakan Factory
                 val viewModel: EventViewModel = viewModel(
                     factory = EventViewModelFactory(token)
                 )
@@ -74,13 +71,16 @@ fun EventScreen(viewModel: EventViewModel) {
     var showCreateDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    // Load data awal
+    val isAdmin = true
+
     LaunchedEffect(Unit) {
         viewModel.loadPublicEvents()
         viewModel.loadMyEvents()
+        if(isAdmin){
+            viewModel.loadPendingEvents()
+        }
     }
 
-    // Tampilkan Toast jika ada error
     LaunchedEffect(error) {
         error?.let {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
@@ -98,8 +98,10 @@ fun EventScreen(viewModel: EventViewModel) {
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { showCreateDialog = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Add Event")
+            if (selectedTabIndex != 2){
+                FloatingActionButton(onClick = { showCreateDialog = true }) {
+                    Icon(Icons.Default.Add, contentDescription = "Add Event")
+                }
             }
         }
     ) { padding ->
@@ -108,28 +110,36 @@ fun EventScreen(viewModel: EventViewModel) {
                 .padding(padding)
                 .fillMaxSize()
         ) {
-            // TABS
-            TabRow(selectedTabIndex = selectedTabIndex) {
-                Tab(
-                    selected = selectedTabIndex == 0,
-                    onClick = { selectedTabIndex = 0 },
-                    text = { Text("Public Events") }
-                )
-                Tab(
-                    selected = selectedTabIndex == 1,
-                    onClick = { selectedTabIndex = 1 },
-                    text = { Text("My Events") }
-                )
+
+            val tabs = if (isAdmin) {
+                listOf("Public Events", "My Events", "Pending Events")
+            } else {
+                listOf("Public Events", "My Events")
             }
 
-            // CONTENT LIST
+            TabRow(selectedTabIndex = selectedTabIndex) {
+                tabs.forEachIndexed { index, title ->
+                Tab(
+                    selected = selectedTabIndex == index,
+                    onClick = { selectedTabIndex = index },
+                    text = { Text(title) }
+                )
+                }
+            }
+
+            // content list
             Box(modifier = Modifier.fillMaxSize()) {
                 if (loading) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 } else {
-                    val eventsToShow = if (selectedTabIndex == 0) publicEvents else myEvents
+                    val eventsToShow = when (selectedTabIndex){
+                        0 -> publicEvents
+                        1 -> myEvents
+                        2 -> viewModel.pendingEvents.collectAsState().value
+                        else -> emptyList()
+                    }
 
-                    if (eventsToShow.isEmpty()) {
+                        if (eventsToShow.isEmpty()) {
                         Text(
                             text = "No events found.",
                             modifier = Modifier.align(Alignment.Center),
@@ -141,7 +151,12 @@ fun EventScreen(viewModel: EventViewModel) {
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             items(eventsToShow) { event ->
-                                EventItem(event)
+                                EventItem(
+                                    event=event,
+                                    isAdminTab = (selectedTabIndex == 2),
+                                    onApprove = { viewModel.approveEvent(event.id) },
+                                    onReject = { viewModel.rejectEvent(event.id) }
+                                )
                             }
                         }
                     }
@@ -165,7 +180,12 @@ fun EventScreen(viewModel: EventViewModel) {
 }
 
 @Composable
-fun EventItem(event: Event) {
+fun EventItem(
+    event: Event,
+    isAdminTab: Boolean = false,
+    onApprove: () -> Unit = {},
+    onReject: () -> Unit = {}
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(4.dp),
@@ -206,6 +226,28 @@ fun EventItem(event: Event) {
                     color = Color.DarkGray
                 )
             }
+            if(isAdminTab && event.status == "PENDING"){
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    OutlinedButton(
+                        onClick = onReject,
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Red),
+                        modifier = Modifier.padding(end = 8.dp)
+                    ) {
+                        Text("Reject")
+                    }
+
+                    Button(
+                        onClick = onApprove,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+                    ) {
+                        Text("Approve")
+                    }
+                }
+            }
         }
     }
 }
@@ -213,9 +255,9 @@ fun EventItem(event: Event) {
 @Composable
 fun StatusChip(status: String) {
     val (bgColor, textColor) = when (status) {
-        "APPROVE" -> Color(0xFFE7F6E7) to Color(0xFF2E7D32) // Hijau
-        "REJECT" -> Color(0xFFFFEBEE) to Color(0xFFC62828)  // Merah
-        else -> Color(0xFFFFF8E1) to Color(0xFFF57C00)      // Kuning (Pending)
+        "APPROVE" -> Color(0xFFE7F6E7) to Color(0xFF2E7D32) // Hijau untuk Approve
+        "REJECT" -> Color(0xFFFFEBEE) to Color(0xFFC62828)  // Merah untuk Reject
+        else -> Color(0xFFFFF8E1) to Color(0xFFF57C00)      // Kuning untuk Pending
     }
 
     Surface(
@@ -237,7 +279,6 @@ fun StatusChip(status: String) {
 fun CreateEventDialog(onDismiss: () -> Unit, onSubmit: (String, String, String) -> Unit) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    // Default date hardcoded dulu untuk kemudahan, nanti bisa pakai DatePicker
     var date by remember { mutableStateOf("2025-12-31") }
 
     AlertDialog(
@@ -271,7 +312,7 @@ fun CreateEventDialog(onDismiss: () -> Unit, onSubmit: (String, String, String) 
         confirmButton = {
             Button(onClick = {
                 if (title.isNotEmpty() && description.isNotEmpty() && date.isNotEmpty()) {
-                    onSubmit(title, description, "${date}T00:00:00Z") // Format ISO standar backend
+                    onSubmit(title, description, "${date}T00:00:00Z")
                 }
             }) {
                 Text("Save")

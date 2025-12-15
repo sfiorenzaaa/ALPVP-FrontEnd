@@ -1,5 +1,6 @@
 package com.shannon.shannonweek14.repository
 
+import android.util.Log
 import com.shannon.shannonweek14.dto.CreateEventRequest
 import com.shannon.shannonweek14.dto.UpdateEventStatusRequest
 import com.shannon.shannonweek14.ui.model.Event
@@ -45,6 +46,17 @@ class EventRepository(private val token: String? = null) {
             return response.body()?.data ?: throw Exception("Empty response")
         } else {
             throw Exception("Failed to update status: ${response.code()} ${response.message()}")
+        }
+    }
+
+    suspend fun getPendingEvents(): List<Event>{
+        val response = api.getPendingEvents()
+        if (response.isSuccessful){
+            return response.body()?.data ?: emptyList()
+        } else {
+            val errorBody = response.errorBody()?.string()
+            Log.e("DEBUG_EVENT", "Gagal ambil pending: ${response.code()} - $errorBody")
+            throw Exception("Failed to fetch pending events")
         }
     }
 }
