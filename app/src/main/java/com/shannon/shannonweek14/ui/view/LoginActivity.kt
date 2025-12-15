@@ -92,6 +92,9 @@ class LoginActivity : ComponentActivity() {
                                 try {
                                     repo.login(email.trim(), password.trim())
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

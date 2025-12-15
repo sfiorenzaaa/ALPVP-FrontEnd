@@ -2,6 +2,7 @@ package com.shannon.shannonweek14.data.repository
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import com.shannon.shannonweek14.data.dto.CreateEventRequest
 import com.shannon.shannonweek14.data.dto.UpdateEventStatusRequest
 import com.shannon.shannonweek14.data.model.Event
@@ -10,12 +11,17 @@ import com.shannon.shannonweek14.data.service.EventService
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 import com.shannon.shannonweek14.dto.CreateEventRequest
 import com.shannon.shannonweek14.dto.UpdateEventStatusRequest
 import com.shannon.shannonweek14.ui.model.Event
 import com.shannon.shannonweek14.data.service.ApiClient
 import com.shannon.shannonweek14.service.EventService
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -44,7 +50,10 @@ class EventRepository(private val token: String? = null) {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     // Get my events
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -60,7 +69,10 @@ class EventRepository(private val token: String? = null) {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     // Admin: Update event status
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
