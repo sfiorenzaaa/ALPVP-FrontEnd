@@ -1,0 +1,29 @@
+package com.shannon.shannonweek14.data.service
+
+import com.shannon.shannonweek14.data.dto.*
+import retrofit2.Response
+import retrofit2.http.*
+
+interface EventService {
+
+    // Public
+    @GET("events")
+    suspend fun getPublicEvents(): Response<EventListResponse>
+
+    // Private
+    @POST("events")
+    suspend fun createEvent(
+        @Body request: CreateEventRequest
+    ): Response<EventResponse>
+
+    // Private
+    @GET("events/my")
+    suspend fun getMyEvents(): Response<EventListResponse>
+
+    // Admin only
+    @PATCH("events/{id}")
+    suspend fun updateEventStatus(
+        @Path("id") eventId: Int,
+        @Body request: UpdateEventStatusRequest
+    ): Response<EventResponse>
+}

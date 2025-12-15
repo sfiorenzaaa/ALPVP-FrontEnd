@@ -1,0 +1,50 @@
+package com.shannon.shannonweek14.data.repository
+
+import com.shannon.shannonweek14.data.dto.CreateEventRequest
+import com.shannon.shannonweek14.data.dto.UpdateEventStatusRequest
+import com.shannon.shannonweek14.data.model.Event
+import com.shannon.shannonweek14.data.service.ApiClient
+import com.shannon.shannonweek14.data.service.EventService
+
+class EventRepository(private val token: String? = null) {
+
+    private val api = ApiClient.getClient(token).create(EventService::class.java)
+
+    suspend fun getPublicEvents(): List<Event> {
+        val response = api.getPublicEvents()
+        if (response.isSuccessful) {
+            return response.body()?.data ?: emptyList()
+        } else {
+            throw Exception("Failed to fetch events: ${response.code()} ${response.message()}")
+        }
+    }
+
+    suspend fun createEvent(request: CreateEventRequest): Event {
+        val response = api.createEvent(request)
+        if (response.isSuccessful) {
+            return response.body()?.data ?: throw Exception("Empty response")
+        } else {
+            throw Exception("Failed to create event: ${response.code()} ${response.message()}")
+        }
+    }
+
+    // Get my events
+    suspend fun getMyEvents(): List<Event> {
+        val response = api.getMyEvents()
+        if (response.isSuccessful) {
+            return response.body()?.data ?: emptyList()
+        } else {
+            throw Exception("Failed to fetch my events: ${response.code()} ${response.message()}")
+        }
+    }
+
+    // Admin: Update event status
+    suspend fun updateEventStatus(eventId: Int, status: String): Event {
+        val response = api.updateEventStatus(eventId, UpdateEventStatusRequest(status))
+        if (response.isSuccessful) {
+            return response.body()?.data ?: throw Exception("Empty response")
+        } else {
+            throw Exception("Failed to update status: ${response.code()} ${response.message()}")
+        }
+    }
+}

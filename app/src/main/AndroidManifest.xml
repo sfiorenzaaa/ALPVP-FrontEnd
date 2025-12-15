@@ -32,6 +32,10 @@
         <activity android:name=".ui.view.JournalActivity" />
         <activity android:name=".ui.view.GuessEmojiActivity" />
 
+        <activity
+            android:name=".ui.view.EventActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
