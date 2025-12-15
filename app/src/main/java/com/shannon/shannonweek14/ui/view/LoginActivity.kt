@@ -1,10 +1,6 @@
 package com.shannon.shannonweek14.ui.view
 
-import android.content.Context
 import android.content.Intent
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.LaunchedEffect
-import com.shannon.shannonweek14.ui.view.HomeActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -12,14 +8,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.shannon.shannonweek14.data.datastore.TokenManager
-import com.shannon.shannonweek14.data.service.ApiClient
-import com.shannon.shannonweek14.service.AuthService
-import com.shannon.shannonweek14.repository.LoginRepository
+import com.google.android.ads.mediationtestsuite.activities.HomeActivity
 import com.shannon.shannonweek14.ui.theme.Theme
 import com.shannon.shannonweek14.ui.viewmodel.AuthViewModel
 
@@ -32,6 +26,7 @@ class LoginActivity : ComponentActivity() {
             Theme {
                 val authViewModel: AuthViewModel = viewModel()
                 val context = LocalContext.current
+
                 val loginToken by authViewModel.loginResponse.observeAsState()
 
                 LaunchedEffect(loginToken) {
@@ -47,8 +42,6 @@ class LoginActivity : ComponentActivity() {
 
                 var email by remember { mutableStateOf("") }
                 var password by remember { mutableStateOf("") }
-
-                var error by remember { mutableStateOf<String?>(null) }
 
                 Column(
                     modifier = Modifier
@@ -83,12 +76,12 @@ class LoginActivity : ComponentActivity() {
                         onClick = {
                             val cleanEmail = email.trim()
                             val cleanPassword = password.trim()
-                            scope.launch {
-                                try {
-                                    repo.login(email.trim(), password.trim())
+
+                            // --- BAGIAN YANG DIPERBAIKI ---
+                            // Cukup cek kosong atau tidak, lalu panggil ViewModel.
+                            // Tidak perlu 'scope.launch' atau 'repo' di sini.
                             if (cleanEmail.isNotEmpty() && cleanPassword.isNotEmpty()) {
                                 authViewModel.login(cleanEmail, cleanPassword)
-
                             } else {
                                 Toast.makeText(
                                     context,
@@ -105,7 +98,6 @@ class LoginActivity : ComponentActivity() {
                         Spacer(Modifier.height(12.dp))
                         Text(errorMessage, color = MaterialTheme.colorScheme.error)
                     }
-
                 }
             }
         }
