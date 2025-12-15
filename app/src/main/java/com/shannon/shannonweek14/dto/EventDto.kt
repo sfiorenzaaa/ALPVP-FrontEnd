@@ -5,7 +5,7 @@ import com.shannon.shannonweek14.data.model.Event
 data class CreateEventRequest(
     val title: String,
     val description: String,
-    val date: String
+    val date: String // Format: "2025-12-31T10:00:00Z"
 )
 
 data class UpdateEventStatusRequest(

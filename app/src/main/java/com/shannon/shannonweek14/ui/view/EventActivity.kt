@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
@@ -29,7 +27,7 @@ import com.shannon.shannonweek14.ui.theme.Theme
 import com.shannon.shannonweek14.ui.viewmodel.EventViewModel
 import kotlinx.coroutines.runBlocking
 
-// 1. FACTORY: Required to pass 'token' to ViewModel constructor
+// 1. FACTORY: Wajib ada karena ViewModel butuh parameter 'token'
 class EventViewModelFactory(private val token: String) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EventViewModel::class.java)) {
@@ -44,7 +42,7 @@ class EventActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Get token synchronously before UI loads
+        // Ambil token secara sinkron untuk inisialisasi awal
         val tokenManager = TokenManager(applicationContext)
         val token = runBlocking {
             tokenManager.getToken() ?: ""
@@ -52,7 +50,7 @@ class EventActivity : ComponentActivity() {
 
         setContent {
             Theme {
-                // Initialize ViewModel with Factory
+                // Inisialisasi ViewModel menggunakan Factory
                 val viewModel: EventViewModel = viewModel(
                     factory = EventViewModelFactory(token)
                 )
@@ -66,23 +64,23 @@ class EventActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventScreen(viewModel: EventViewModel) {
-    // States
+    // State
     val publicEvents by viewModel.publicEvents.collectAsState()
     val myEvents by viewModel.myEvents.collectAsState()
     val loading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
 
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    var selectedTabIndex by remember { mutableStateOf(0) }
     var showCreateDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    // Load initial data
+    // Load data awal
     LaunchedEffect(Unit) {
         viewModel.loadPublicEvents()
         viewModel.loadMyEvents()
     }
 
-    // Show Toast on error
+    // Tampilkan Toast jika ada error
     LaunchedEffect(error) {
         error?.let {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
@@ -110,7 +108,7 @@ fun EventScreen(viewModel: EventViewModel) {
                 .padding(padding)
                 .fillMaxSize()
         ) {
-            // TABS (Public vs My Events)
+            // TABS
             TabRow(selectedTabIndex = selectedTabIndex) {
                 Tab(
                     selected = selectedTabIndex == 0,
@@ -203,7 +201,7 @@ fun EventItem(event: Event) {
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "📅 ${event.eventDate.take(10)}",
+                    text = "📅 ${event.eventDate.take(10)}", // Ambil tanggalnya saja (YYYY-MM-DD)
                     style = MaterialTheme.typography.labelMedium,
                     color = Color.DarkGray
                 )
@@ -215,9 +213,9 @@ fun EventItem(event: Event) {
 @Composable
 fun StatusChip(status: String) {
     val (bgColor, textColor) = when (status) {
-        "APPROVE" -> Color(0xFFE7F6E7) to Color(0xFF2E7D32) // Green
-        "REJECT" -> Color(0xFFFFEBEE) to Color(0xFFC62828)  // Red
-        else -> Color(0xFFFFF8E1) to Color(0xFFF57C00)      // Yellow/Orange
+        "APPROVE" -> Color(0xFFE7F6E7) to Color(0xFF2E7D32) // Hijau
+        "REJECT" -> Color(0xFFFFEBEE) to Color(0xFFC62828)  // Merah
+        else -> Color(0xFFFFF8E1) to Color(0xFFF57C00)      // Kuning (Pending)
     }
 
     Surface(
@@ -239,15 +237,14 @@ fun StatusChip(status: String) {
 fun CreateEventDialog(onDismiss: () -> Unit, onSubmit: (String, String, String) -> Unit) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var date by remember { mutableStateOf("2025-12-31") } // Default YYYY-MM-DD
+    // Default date hardcoded dulu untuk kemudahan, nanti bisa pakai DatePicker
+    var date by remember { mutableStateOf("2025-12-31") }
 
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Create New Event") },
         text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
+            Column {
                 OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
@@ -259,8 +256,7 @@ fun CreateEventDialog(onDismiss: () -> Unit, onSubmit: (String, String, String) 
                     value = description,
                     onValueChange = { description = it },
                     label = { Text("Description") },
-                    modifier = Modifier.fillMaxWidth(),
-                    minLines = 3
+                    modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
@@ -275,8 +271,7 @@ fun CreateEventDialog(onDismiss: () -> Unit, onSubmit: (String, String, String) 
         confirmButton = {
             Button(onClick = {
                 if (title.isNotEmpty() && description.isNotEmpty() && date.isNotEmpty()) {
-                    // Combine date with time to satisfy backend ISO format
-                    onSubmit(title, description, "${date}T00:00:00Z")
+                    onSubmit(title, description, "${date}T00:00:00Z") // Format ISO standar backend
                 }
             }) {
                 Text("Save")

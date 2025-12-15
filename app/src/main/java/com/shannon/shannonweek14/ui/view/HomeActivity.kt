@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shannon.shannonweek14.ui.theme.ColorPalette
 import com.shannon.shannonweek14.ui.theme.Theme
@@ -74,16 +73,6 @@ class HomeActivity : ComponentActivity() {
                 description = "Decode the emoji puzzle!"
             ) {
                 startActivity(Intent(this@HomeActivity, GuessEmojiActivity::class.java))
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // TAMBAHKAN INI - EVENT CARD
-            CardMenu(
-                title = "📅 Events",
-                description = "Browse and create community events."
-            ) {
-                startActivity(Intent(this@HomeActivity, EventActivity::class.java))
             }
 
             Spacer(modifier = Modifier.height(80.dp))

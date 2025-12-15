@@ -1,5 +1,5 @@
-
 package com.shannon.shannonweek14.data.model
+
 data class Event(
     val id: Int,
     val title: String,

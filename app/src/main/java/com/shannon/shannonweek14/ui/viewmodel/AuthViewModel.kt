@@ -17,7 +17,7 @@ class AuthViewModel : ViewModel() {
     val loginResponse = MutableLiveData<String>()      // token
     val registerSuccess = MutableLiveData<Boolean>()
 
-    fun login(email: String, password: String) {
+    fun login(email: String, password: String, function: () -> Unit) {
         loading.value = true
 
         viewModelScope.launch {

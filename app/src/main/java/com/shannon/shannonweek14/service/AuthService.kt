@@ -1,4 +1,4 @@
-package com.shannon.shannonweek14.service
+package com.shannon.shannonweek14.data.service
 
 import com.shannon.shannonweek14.data.dto.ApiResponse
 import com.shannon.shannonweek14.data.dto.LoginRequest
@@ -9,7 +9,7 @@ import retrofit2.http.POST
 
 interface AuthService {
 
-    @POST("users")
+    @POST("users/register")
     suspend fun register(
         @Body body: RegisterRequest
     ): ApiResponse<Any>

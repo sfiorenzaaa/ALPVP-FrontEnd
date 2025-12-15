@@ -2,7 +2,6 @@ package com.shannon.shannonweek14.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
 import com.shannon.shannonweek14.data.dto.CreateEventRequest
 import com.shannon.shannonweek14.data.model.Event
 import com.shannon.shannonweek14.data.repository.EventRepository
