@@ -7,33 +7,31 @@ import retrofit2.http.*
 
 interface EventService {
 
-    // Public
     @GET("events")
-    suspend fun getPublicEvents(): Response<EventListResponse>
+    suspend fun getPublicEvents(): Response<ApiResponse<List<Event>>>
 
     @GET("events/pending")
     suspend fun getPendingEvents(): Response<ApiResponse<List<Event>>>
 
 
-    // Private
     @POST("events")
     suspend fun createEvent(
         @Body request: CreateEventRequest
-    ): Response<EventResponse>
+    ): Response<ApiResponse<Event>>
 
-    // Private
     @GET("events/my")
-    suspend fun getMyEvents(): Response<EventListResponse>
+    suspend fun getMyEvents(): Response<ApiResponse<List<Event>>>
 
-    // Admin only
+
     @PATCH("events/{id}")
     suspend fun updateEventStatus(
         @Path("id") eventId: Int,
         @Body request: UpdateEventStatusRequest
-    ): Response<EventResponse>
+    ): Response<ApiResponse<Event>>
 
-    data class StatusUpdateReq(
-        val status: String
-    )
-
+    @POST("events/{id}/join")
+    suspend fun joinEvent(
+        @Header("Authorization") token: String,
+        @Path("id") eventId: Int
+    ): Response<Void>
 }

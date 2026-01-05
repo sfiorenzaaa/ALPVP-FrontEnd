@@ -10,6 +10,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -25,6 +28,8 @@ import com.shannon.shannonweek14.data.datastore.TokenManager
 import com.shannon.shannonweek14.ui.model.Event
 import com.shannon.shannonweek14.ui.theme.Theme
 import com.shannon.shannonweek14.ui.viewmodel.EventViewModel
+import com.shannon.shannonweek14.dto.EventResponse
+
 import kotlinx.coroutines.runBlocking
 
 class EventViewModelFactory(private val token: String) : ViewModelProvider.Factory {
@@ -154,6 +159,11 @@ fun EventScreen(viewModel: EventViewModel) {
                                 EventItem(
                                     event=event,
                                     isAdminTab = (selectedTabIndex == 2),
+                                    onJoinClick = {
+                                        viewModel.joinEvent(event.id)
+                                        Toast.makeText(context, viewModel.joinMessage.value, Toast.LENGTH_SHORT).show()
+                                                  },
+
                                     onApprove = { viewModel.approveEvent(event.id) },
                                     onReject = { viewModel.rejectEvent(event.id) }
                                 )
@@ -181,76 +191,137 @@ fun EventScreen(viewModel: EventViewModel) {
 
 @Composable
 fun EventItem(
+    // 1. Parameter disesuaikan dengan error log kamu
     event: Event,
     isAdminTab: Boolean = false,
+    onJoinClick: () -> Unit = {},
     onApprove: () -> Unit = {},
     onReject: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            // --- JUDUL & STATUS ---
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = event.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    text = event.title ?: "No Title",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
                 )
-                StatusChip(status = event.status)
+
+                Surface(
+                    color = if (event.status == "APPROVE") Color(0xFFE8F5E9) else Color(0xFFFFEBEE),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Text(
+                        text = event.status ?: "NULL",
+                        color = if (event.status == "APPROVE") Color(0xFF2E7D32) else Color(0xFFC62828),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                }
             }
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = "By: ${event.user?.username ?: "Unknown"}",
-                style = MaterialTheme.typography.bodySmall,
-                color = Color.Gray
-            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(text = event.description, style = MaterialTheme.typography.bodyMedium)
+            // --- AUTHOR & DESKRIPSI ---
+            Text(
+                text = "By: ${event.author ?: "Unknown"}",
+                fontSize = 12.sp,
+                color = Color.Gray
+            )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = event.description ?: "-",
+                fontSize = 14.sp,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = "📅 ${event.eventDate.take(10)}",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = Color.DarkGray
+            // --- TANGGAL ---
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = 12.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = null,
+                    tint = Color.Red,
+                    modifier = Modifier.size(16.dp)
                 )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = event.date ?: "No Date", fontSize = 12.sp)
             }
-            if(isAdminTab && event.status == "PENDING"){
-                Spacer(modifier = Modifier.height(16.dp))
+
+            if (isAdminTab) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    OutlinedButton(
-                        onClick = onReject,
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Red),
-                        modifier = Modifier.padding(end = 8.dp)
-                    ) {
-                        Text("Reject")
-                    }
-
                     Button(
                         onClick = onApprove,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)),
+                        shape = RoundedCornerShape(8.dp)
                     ) {
-                        Text("Approve")
+                        Text("Approve", color = Color.White)
+                    }
+                    Button(
+                        onClick = onReject,
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF44336)),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text("Reject", color = Color.White)
+                    }
+                }
+            } else {
+                if (event.isJoined) {
+                    Button(
+                        onClick = {},
+                        enabled = false,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            disabledContainerColor = Color(0xFFA5D6A7),
+                            disabledContentColor = Color(0xFF1B5E20)
+                        ),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(text = "Joined")
+                    }
+                } else {
+                    Button(
+                        onClick = onJoinClick,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE0E0B0)),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(text = "Join Event", color = Color.Black)
                     }
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun StatusChip(status: String) {

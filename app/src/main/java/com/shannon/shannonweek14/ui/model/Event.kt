@@ -8,7 +8,10 @@ data class Event(
     val status: String, // "PENDING", "APPROVE", "REJECT"
     val createdAt: String,
     val userId: Int,
-    val user: EventUser? = null
+    val user: EventUser? = null,
+    val date: String?,
+    val author: String?,
+    val isJoined: Boolean = false
 )
 
 data class EventUser(

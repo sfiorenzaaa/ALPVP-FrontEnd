@@ -1,9 +1,12 @@
 package com.shannon.shannonweek14.ui.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shannon.shannonweek14.dto.LoginRequest
+import com.shannon.shannonweek14.service.ApiConfig
+import com.shannon.shannonweek14.dto.LoginResponse
 import com.shannon.shannonweek14.dto.RegisterRequest
 import com.shannon.shannonweek14.repository.AuthRepository
 import kotlinx.coroutines.launch
@@ -14,7 +17,9 @@ class AuthViewModel : ViewModel() {
 
     val loading = MutableLiveData<Boolean>()
     val error = MutableLiveData<String>()
-    val loginResponse = MutableLiveData<String>()      // token
+
+    private val _loginResponse = MutableLiveData<LoginResponse?>()
+    val loginResponse: LiveData<LoginResponse?> = _loginResponse
     val registerSuccess = MutableLiveData<Boolean>()
 
     fun login(email: String, password: String) {
@@ -22,8 +27,14 @@ class AuthViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val result = repo.login(LoginRequest(email, password))
-                loginResponse.value = result.data.token
+
+                val apiService = ApiConfig.auth()
+                val response = apiService.login(LoginRequest(email, password))
+                if (response != null) {
+                    _loginResponse.value = response.data
+                } else {
+                    error.value = "Login Gagal"
+                }
             } catch (e: Exception) {
                 error.value = e.message
             }
