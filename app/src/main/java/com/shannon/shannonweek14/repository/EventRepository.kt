@@ -28,7 +28,6 @@ class EventRepository(private val token: String? = null) {
 
         if (response.isSuccessful) {
             val body = response.body()
-            // Log apakah body null, data null, atau listnya kosong
             Log.d("DEBUG_REPO", "MyEvents Response Body: $body")
             Log.d("DEBUG_REPO", "MyEvents Data Size: ${body?.data?.size}")
 
@@ -39,9 +38,6 @@ class EventRepository(private val token: String? = null) {
             throw Exception("Failed: ${response.code()}")
         }
     }
-    // -----------------------------
-
-    // ... (Fungsi createEvent, updateEventStatus, dll biarkan seperti sebelumnya) ...
     suspend fun createEvent(request: CreateEventRequest): Event {
         val response = api.createEvent(request)
         if (response.isSuccessful) return response.body()?.data!!

@@ -21,7 +21,7 @@ class LoginRepository(
 
         if (loginData != null && message.contains("success", ignoreCase = true)) {
 
-            tokenManager.saveToken(loginData.token)
+            tokenManager.saveToken(loginData.token, loginData.role)
 
             return loginData
         } else {

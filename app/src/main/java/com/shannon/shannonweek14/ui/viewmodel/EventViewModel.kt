@@ -94,21 +94,31 @@ class EventViewModel(private val token: String) : ViewModel() {
 
                 _joinMessage.value = "Berhasil Join Event!"
 
-                // 2. LOGIKA BARU: Update tampilan tombol secara manual
-                // Kita cari event yang di-klik, lalu ubah isJoined = true
                 _publicEvents.value = _publicEvents.value.map { event ->
                     if (event.id == eventId) {
-                        event.copy(isJoined = true) // Ubah status jadi Joined
+                        event.copy(isJoined = true)
                     } else {
                         event
                     }
                 }
 
-                // Opsional: Kalau mau data paling fresh dari server (tapi bakal loading):
-                // loadPublicEvents()
+                loadPublicEvents()
+
 
             } catch (e: Exception) {
-                _error.value = "Gagal join: ${e.message}"
+                if (e.message?. contains("409")==true || e.message?.contains("400") == true) {
+                    _error.value = "Kamu sudah join event ini"
+
+                    _publicEvents.value = _publicEvents.value.map { event ->
+                        if (event.id == eventId) {
+                            event.copy(isJoined = true)
+                        } else {
+                            event
+                        }
+                    }
+                } else {
+                    _error.value = "Gagal join: ${e.message}"
+                }
             } finally {
                 _loading.value = false
             }
