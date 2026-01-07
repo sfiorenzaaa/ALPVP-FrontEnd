@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.shannon.shannonweek14.ui.theme.Theme
 import com.shannon.shannonweek14.ui.view.JournalActivity
 import com.shannon.shannonweek14.ui.view.SongsActivity
-
 import com.shannon.shannonweek14.ui.view.GuessEmojiActivity
+import com.shannon.shannonweek14.ui.view.PetActivity
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +33,9 @@ class MainActivity : ComponentActivity() {
                     },
                     onGuessClick = {
                         startActivity(Intent(this, GuessEmojiActivity::class.java))
+                    },
+                    onPetClick = {
+                        startActivity(Intent(this, PetActivity::class.java))
                     }
                 )
             }
@@ -44,7 +47,8 @@ class MainActivity : ComponentActivity() {
 fun HomeMenuScreen(
     onSongsClick: () -> Unit,
     onJournalClick: () -> Unit,
-    onGuessClick: () -> Unit
+    onGuessClick: () -> Unit,
+    onPetClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -67,6 +71,12 @@ fun HomeMenuScreen(
 
         MenuCard(title = "🤔  Guess The Emoji", subtitle = "Decode the emoji puzzle!") {
             onGuessClick()
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        MenuCard(title = "🐾  Virtual Pet", subtitle = "Take care of your own virtual pet.") {
+            onPetClick()
         }
     }
 }
