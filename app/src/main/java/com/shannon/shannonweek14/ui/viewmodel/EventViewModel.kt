@@ -40,6 +40,10 @@ class EventViewModel(private val token: String) : ViewModel() {
         viewModelScope.launch {
             try {
                 _publicEvents.value = repository.getPublicEvents()
+            try {   
+                val events = repo.getPublicEvents()
+                _publicEvents.value = events
+                _error.value = null
             } catch (e: Exception) {
                 _error.value = "Failed to load public: ${e.message}"
             } finally {

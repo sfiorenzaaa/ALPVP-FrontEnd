@@ -27,11 +27,12 @@
             android:name=".ui.view.HomeActivity"
             android:exported="false" />
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ui.view.SongsActivity" />
-        <activity android:name=".ui.view.JournalActivity" />
-        <activity android:name=".ui.view.GuessEmojiActivity" />
-        <activity android:name=".ui.view.EventActivity" />
+        <activity android:name=".MainActivity" android:exported="false" />
+        <activity android:name=".ui.view.SongsActivity" android:exported="false" />
+        <activity android:name=".ui.view.JournalActivity" android:exported="false" />
+        <activity android:name=".ui.view.GuessEmojiActivity" android:exported="false" />
+        <activity android:name=".ui.view.EventActivity" android:exported="false" />
+        <activity android:name=".ui.view.PetActivity" android:exported="false" />
 
     </application>
 
