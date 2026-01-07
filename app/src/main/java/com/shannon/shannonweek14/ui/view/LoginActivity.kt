@@ -38,7 +38,7 @@ class LoginActivity : ComponentActivity() {
 
                 LaunchedEffect(loginToken) {
                     if (loginToken != null) {
-                        tokenManager.saveToken(loginToken!!)
+                        tokenManager.saveToken(loginToken!!.token, loginToken!!.role)
                         Toast.makeText(context, "Login Berhasil!", Toast.LENGTH_SHORT).show()
 
                         val intent = Intent(context, HomeActivity::class.java)

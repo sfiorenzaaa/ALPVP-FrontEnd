@@ -1,5 +1,6 @@
 package com.shannon.shannonweek14.repository
 
+import android.util.Log
 import com.shannon.shannonweek14.dto.CreateEventRequest
 import com.shannon.shannonweek14.dto.UpdateEventStatusRequest
 import com.shannon.shannonweek14.ui.model.Event
@@ -13,38 +14,50 @@ class EventRepository(private val token: String? = null) {
     suspend fun getPublicEvents(): List<Event> {
         val response = api.getPublicEvents()
         if (response.isSuccessful) {
-            return response.body()?.data ?: emptyList()
+            val list = response.body()?.data ?: emptyList()
+            Log.d("DEBUG_REPO", "Public Events Size: ${list.size}") // LOG
+            return list
         } else {
-            throw Exception("Failed to fetch events: ${response.code()} ${response.message()}")
+            throw Exception("Failed: ${response.code()}")
         }
     }
 
-    suspend fun createEvent(request: CreateEventRequest): Event {
-        val response = api.createEvent(request)
-        if (response.isSuccessful) {
-            return response.body()?.data ?: throw Exception("Empty response")
-        } else {
-            throw Exception("Failed to create event: ${response.code()} ${response.message()}")
-        }
-    }
-
-    // Get my events
+    // --- BAGIAN INI KITA DEBUG ---
     suspend fun getMyEvents(): List<Event> {
         val response = api.getMyEvents()
+
         if (response.isSuccessful) {
-            return response.body()?.data ?: emptyList()
+            val body = response.body()
+            Log.d("DEBUG_REPO", "MyEvents Response Body: $body")
+            Log.d("DEBUG_REPO", "MyEvents Data Size: ${body?.data?.size}")
+
+            return body?.data ?: emptyList()
         } else {
-            throw Exception("Failed to fetch my events: ${response.code()} ${response.message()}")
+            val error = response.errorBody()?.string()
+            Log.e("DEBUG_REPO", "MyEvents Error: ${response.code()} - $error")
+            throw Exception("Failed: ${response.code()}")
         }
     }
+    suspend fun createEvent(request: CreateEventRequest): Event {
+        val response = api.createEvent(request)
+        if (response.isSuccessful) return response.body()?.data!!
+        else throw Exception("Failed create")
+    }
 
-    // Admin: Update event status
     suspend fun updateEventStatus(eventId: Int, status: String): Event {
         val response = api.updateEventStatus(eventId, UpdateEventStatusRequest(status))
-        if (response.isSuccessful) {
-            return response.body()?.data ?: throw Exception("Empty response")
-        } else {
-            throw Exception("Failed to update status: ${response.code()} ${response.message()}")
-        }
+        if (response.isSuccessful) return response.body()?.data!!
+        else throw Exception("Failed update")
+    }
+
+    suspend fun getPendingEvents(): List<Event> {
+        val response = api.getPendingEvents()
+        return if (response.isSuccessful) response.body()?.data ?: emptyList()
+        else throw Exception("Failed pending")
+    }
+
+    suspend fun joinEvent(token: String, eventId: Int) {
+        val formattedToken = "Bearer $token"
+        api.joinEvent(formattedToken, eventId)
     }
 }
