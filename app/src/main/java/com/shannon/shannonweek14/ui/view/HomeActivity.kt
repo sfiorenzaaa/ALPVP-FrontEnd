@@ -84,6 +84,15 @@ class HomeActivity : ComponentActivity() {
                 startActivity(Intent(this@HomeActivity, EventActivity::class.java))
             }
 
+            Spacer(modifier = Modifier.height(20.dp))
+
+            CardMenu(
+                title = "🐾 Virtual Pet",
+                description = "Take care of your own virtual pet."
+            ) {
+                startActivity(Intent(this@HomeActivity, PetActivity::class.java))
+            }
+
         }
     }
 
@@ -128,3 +137,6 @@ class HomeActivity : ComponentActivity() {
         }
     }
 }
+
+
+//update view new jae

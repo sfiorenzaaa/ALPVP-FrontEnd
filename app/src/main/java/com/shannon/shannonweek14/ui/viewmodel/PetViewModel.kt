@@ -12,26 +12,21 @@ import com.shannon.shannonweek14.ui.model.PetActivityModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-// --- State --- //
 data class PetUiState(
     val petStatus: Pet? = null,
     val activityHistory: List<PetActivityModel> = emptyList(),
     val loading: Boolean = false,
     val error: String? = null,
 
-    // State for Create Pet Card
     val createPetName: String = "",
 
-    // State for Log Activity Card
     val logActivityDescription: String = "",
     val logActivityType: String = "WORK_TASK",
 
-    // State for Update Pet Name Dialog
     val isUpdateDialogVisible: Boolean = false,
     val updatePetNameInput: String = ""
 )
 
-// --- Mapper Functions --- //
 private fun PetResponseData.toPet(): Pet = Pet(
     id = this.id,
     name = this.name,
